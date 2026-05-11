@@ -1,0 +1,15 @@
+flask
+fastapi
+uvicorn
+torch
+pandas
+numpy
+scikit-learn
+joblib
+matplotlib
+seaborn
+gunicorn
+prometheus-client
+requests
+python-dotenv
+pyyaml
