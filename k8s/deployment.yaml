@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: diabetes-deployment
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: diabetes-app
+
+  template:
+    metadata:
+      labels:
+        app: diabetes-app
+
+    spec:
+      containers:
+        - name: diabetes-container
+          image: aarushi1111/diabetes-app:latest
+
+          ports:
+            - containerPort: 5000
