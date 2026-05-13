@@ -19,8 +19,8 @@ app = Flask(__name__)
 # FIXED PATHS FOR DOCKER
 # ===================================
 
-MODEL_PATH = "../model/diabetes_model.pth"
-SCALER_PATH = "../model/scaler.pkl"
+MODEL_PATH = "model/diabetes_model.pth"
+SCALER_PATH = "model/scaler.pkl"
 
 print("Current Working Directory:", os.getcwd())
 print("MODEL_PATH:", MODEL_PATH)
