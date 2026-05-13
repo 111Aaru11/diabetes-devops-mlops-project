@@ -12,13 +12,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t diabetes-app .'
+                bat 'docker build -t diabetes-app .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 5001:5000 --name diabetes-container diabetes-app'
+                bat 'docker run -d -p 5001:5000 --name diabetes-container diabetes-app'
             }
         }
 
