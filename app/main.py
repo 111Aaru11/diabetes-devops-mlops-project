@@ -19,12 +19,10 @@ app = Flask(__name__)
 # FIXED PATHS FOR DOCKER
 # ===================================
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_PATH = "../model/diabetes_model.pth"
+SCALER_PATH = "../model/scaler.pkl"
 
-MODEL_PATH = os.path.join(BASE_DIR, "model", "diabetes_model.pth")
-SCALER_PATH = os.path.join(BASE_DIR, "model", "scaler.pkl")
-
-print("BASE_DIR:", BASE_DIR)
+print("Current Working Directory:", os.getcwd())
 print("MODEL_PATH:", MODEL_PATH)
 print("SCALER_PATH:", SCALER_PATH)
 
