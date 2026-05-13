@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 
 import numpy as np
-
+import os
 import joblib
 
 
@@ -16,10 +16,31 @@ app = Flask(__name__)
 
 
 # ===================================
+# FIXED PATHS FOR DOCKER
+# ===================================
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+MODEL_PATH = os.path.join(
+    BASE_DIR,
+    "..",
+    "model",
+    "diabetes_model.pth"
+)
+
+SCALER_PATH = os.path.join(
+    BASE_DIR,
+    "..",
+    "model",
+    "scaler.pkl"
+)
+
+
+# ===================================
 # LOAD SCALER
 # ===================================
 
-scaler = joblib.load("model/scaler.pkl")
+scaler = joblib.load(SCALER_PATH)
 
 
 # ===================================
@@ -60,7 +81,7 @@ model = DiabetesANN()
 
 model.load_state_dict(
     torch.load(
-        "model/diabetes_model.pth",
+        MODEL_PATH,
         map_location=torch.device("cpu")
     )
 )
@@ -176,36 +197,39 @@ if __name__ == "__main__":
         debug=True
     )
 
-
-
-
-
-# from flask import Flask, request, jsonify
+    
+# from flask import Flask, render_template, request, jsonify
 
 # import torch
 # import torch.nn as nn
+
 # import numpy as np
+# import os
 # import joblib
 
-# # =========================
-# # LOAD FLASK APP
-# # =========================
+
+# # ===================================
+# # CREATE FLASK APP
+# # ===================================
 
 # app = Flask(__name__)
 
-# # =========================
+
+# # ===================================
 # # LOAD SCALER
-# # =========================
+# # ===================================
 
 # scaler = joblib.load("model/scaler.pkl")
 
-# # =========================
-# # DEFINE MODEL
-# # =========================
+
+# # ===================================
+# # DEFINE ANN MODEL
+# # ===================================
 
 # class DiabetesANN(nn.Module):
 
 #     def __init__(self):
+
 #         super(DiabetesANN, self).__init__()
 
 #         self.network = nn.Sequential(
@@ -224,33 +248,40 @@ if __name__ == "__main__":
 #         )
 
 #     def forward(self, x):
+
 #         return self.network(x)
 
-# # =========================
+
+# # ===================================
 # # LOAD TRAINED MODEL
-# # =========================
+# # ===================================
 
 # model = DiabetesANN()
 
 # model.load_state_dict(
-#     torch.load("model/diabetes_model.pth")
+#     torch.load(
+#         "model/diabetes_model.pth",
+#         map_location=torch.device("cpu")
+#     )
 # )
 
 # model.eval()
 
-# # =========================
-# # HOME ROUTE
-# # =========================
+
+# # ===================================
+# # HOME PAGE
+# # ===================================
 
 # @app.route("/")
 
 # def home():
 
-#     return "Diabetes Prediction API Running Successfully!"
+#     return render_template("index.html")
 
-# # =========================
-# # PREDICTION ROUTE
-# # =========================
+
+# # ===================================
+# # PREDICTION API
+# # ===================================
 
 # @app.route("/predict", methods=["POST"])
 
@@ -258,22 +289,36 @@ if __name__ == "__main__":
 
 #     try:
 
-#         data = request.json
+#         data = request.get_json()
 
-#         input_data = np.array([
-#             [
-#                 data["Pregnancies"],
-#                 data["Glucose"],
-#                 data["BloodPressure"],
-#                 data["SkinThickness"],
-#                 data["Insulin"],
-#                 data["BMI"],
-#                 data["DiabetesPedigreeFunction"],
-#                 data["Age"]
-#             ]
-#         ])
+#         pregnancies = float(data["pregnancies"])
 
-#         # Scale data
+#         glucose = float(data["glucose"])
+
+#         blood_pressure = float(data["blood_pressure"])
+
+#         skin_thickness = float(data["skin_thickness"])
+
+#         insulin = float(data["insulin"])
+
+#         bmi = float(data["bmi"])
+
+#         pedigree = float(data["pedigree"])
+
+#         age = float(data["age"])
+
+#         input_data = np.array([[
+#             pregnancies,
+#             glucose,
+#             blood_pressure,
+#             skin_thickness,
+#             insulin,
+#             bmi,
+#             pedigree,
+#             age
+#         ]])
+
+#         # SCALE DATA
 
 #         input_scaled = scaler.transform(input_data)
 
@@ -282,7 +327,7 @@ if __name__ == "__main__":
 #             dtype=torch.float32
 #         )
 
-#         # Prediction
+#         # MODEL PREDICTION
 
 #         with torch.no_grad():
 
@@ -290,17 +335,23 @@ if __name__ == "__main__":
 
 #             probability = torch.sigmoid(output).item()
 
-#         prediction = (
-#             "DIABETIC"
-#             if probability >= 0.5
-#             else "NON-DIABETIC"
-#         )
+#         if probability >= 0.5:
+
+#             prediction = "DIABETIC"
+
+#             confidence = probability
+
+#         else:
+
+#             prediction = "NON-DIABETIC"
+
+#             confidence = 1 - probability
 
 #         return jsonify({
 
 #             "prediction": prediction,
 
-#             "confidence": round(probability, 4)
+#             "confidence": f"{confidence:.4f}"
 
 #         })
 
@@ -312,9 +363,10 @@ if __name__ == "__main__":
 
 #         })
 
-# # =========================
-# # RUN APP
-# # =========================
+
+# # ===================================
+# # RUN FLASK APP
+# # ===================================
 
 # if __name__ == "__main__":
 
@@ -323,3 +375,151 @@ if __name__ == "__main__":
 #         port=5000,
 #         debug=True
 #     )
+
+
+
+
+
+# # from flask import Flask, request, jsonify
+
+# # import torch
+# # import torch.nn as nn
+# # import numpy as np
+# # import joblib
+
+# # # =========================
+# # # LOAD FLASK APP
+# # # =========================
+
+# # app = Flask(__name__)
+
+# # # =========================
+# # # LOAD SCALER
+# # # =========================
+
+# # scaler = joblib.load("model/scaler.pkl")
+
+# # # =========================
+# # # DEFINE MODEL
+# # # =========================
+
+# # class DiabetesANN(nn.Module):
+
+# #     def __init__(self):
+# #         super(DiabetesANN, self).__init__()
+
+# #         self.network = nn.Sequential(
+
+# #             nn.Linear(8, 32),
+# #             nn.ReLU(),
+
+# #             nn.Linear(32, 16),
+# #             nn.ReLU(),
+
+# #             nn.Linear(16, 8),
+# #             nn.ReLU(),
+
+# #             nn.Linear(8, 1)
+
+# #         )
+
+# #     def forward(self, x):
+# #         return self.network(x)
+
+# # # =========================
+# # # LOAD TRAINED MODEL
+# # # =========================
+
+# # model = DiabetesANN()
+
+# # model.load_state_dict(
+# #     torch.load("model/diabetes_model.pth")
+# # )
+
+# # model.eval()
+
+# # # =========================
+# # # HOME ROUTE
+# # # =========================
+
+# # @app.route("/")
+
+# # def home():
+
+# #     return "Diabetes Prediction API Running Successfully!"
+
+# # # =========================
+# # # PREDICTION ROUTE
+# # # =========================
+
+# # @app.route("/predict", methods=["POST"])
+
+# # def predict():
+
+# #     try:
+
+# #         data = request.json
+
+# #         input_data = np.array([
+# #             [
+# #                 data["Pregnancies"],
+# #                 data["Glucose"],
+# #                 data["BloodPressure"],
+# #                 data["SkinThickness"],
+# #                 data["Insulin"],
+# #                 data["BMI"],
+# #                 data["DiabetesPedigreeFunction"],
+# #                 data["Age"]
+# #             ]
+# #         ])
+
+# #         # Scale data
+
+# #         input_scaled = scaler.transform(input_data)
+
+# #         input_tensor = torch.tensor(
+# #             input_scaled,
+# #             dtype=torch.float32
+# #         )
+
+# #         # Prediction
+
+# #         with torch.no_grad():
+
+# #             output = model(input_tensor)
+
+# #             probability = torch.sigmoid(output).item()
+
+# #         prediction = (
+# #             "DIABETIC"
+# #             if probability >= 0.5
+# #             else "NON-DIABETIC"
+# #         )
+
+# #         return jsonify({
+
+# #             "prediction": prediction,
+
+# #             "confidence": round(probability, 4)
+
+# #         })
+
+# #     except Exception as e:
+
+# #         return jsonify({
+
+# #             "error": str(e)
+
+# #         })
+
+# # # =========================
+# # # RUN APP
+# # # =========================
+
+# # if __name__ == "__main__":
+
+# #     app.run(
+# #         host="0.0.0.0",
+# #         port=5000,
+# #         debug=True
+# #     )
