@@ -19,21 +19,16 @@ app = Flask(__name__)
 # FIXED PATHS FOR DOCKER
 # ===================================
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MODEL_PATH = os.path.join(
-    BASE_DIR,
-    "..",
-    "model",
-    "diabetes_model.pth"
-)
+MODEL_PATH = os.path.join(BASE_DIR, "model", "diabetes_model.pth")
+SCALER_PATH = os.path.join(BASE_DIR, "model", "scaler.pkl")
 
-SCALER_PATH = os.path.join(
-    BASE_DIR,
-    "..",
-    "model",
-    "scaler.pkl"
-)
+print("BASE_DIR:", BASE_DIR)
+print("MODEL_PATH:", MODEL_PATH)
+print("SCALER_PATH:", SCALER_PATH)
+
+# scaler = joblib.load(SCALER_PATH)
 
 
 # ===================================
@@ -197,7 +192,7 @@ if __name__ == "__main__":
         debug=True
     )
 
-    
+
 # from flask import Flask, render_template, request, jsonify
 
 # import torch
