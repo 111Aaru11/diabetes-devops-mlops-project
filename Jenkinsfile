@@ -18,7 +18,10 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                bat 'docker run -d -p 5001:5000 --name diabetes-container diabetes-app'
+                bat '''
+                docker rm -f diabetes-container || exit 0
+                docker run -d -p 5001:5000 --name diabetes-container diabetes-app
+                '''
             }
         }
 
