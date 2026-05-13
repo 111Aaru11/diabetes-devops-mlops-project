@@ -12,7 +12,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t diabetes-app -f docker/Dockerfile .'
+                bat 'docker build -t diabetes-app .'
             }
         }
 
