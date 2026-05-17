@@ -11,7 +11,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/11Aaru11/diabetes-devops-mlops-project.git'
+                url: 'https://github.com/111Aaru11/diabetes-devops-mlops-project.git'
             }
         }
 
