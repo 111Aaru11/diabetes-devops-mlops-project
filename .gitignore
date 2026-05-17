@@ -2,9 +2,6 @@ venv/
 __pycache__/
 *.pyc
 
-model/*.pth
-model/*.pkl
-
 .env
 
 .DS_Store
