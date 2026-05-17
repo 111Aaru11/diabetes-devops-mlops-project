@@ -20,6 +20,7 @@ spec:
       containers:
         - name: diabetes-container
           image: aarushi1111/diabetes-app:latest
-
+          imagePullPolicy: Always
+          
           ports:
             - containerPort: 5000
