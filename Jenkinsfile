@@ -5,7 +5,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "aarushi1111/diabetes-app:latest"
     }
-
+    #test webhook trigger
     stages {
 
         stage('Clone Repository') {
