@@ -54,12 +54,7 @@ pipeline {
         }
         stage('Run Ansible Playbook') {
             steps {
-                bat '''
-                wsl bash -c "
-                cd /mnt/c/Users/aarus/Documents/Diabetes-devops-mlops-project/ansible &&
-                ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i inventory playbook.yml
-                "
-                '''
+                bat 'wsl bash -c "cd /mnt/c/Users/aarus/Documents/Diabetes-devops-mlops-project/ansible && ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i inventory playbook.yml"'
             }
         }
         stage('Deploy to Kubernetes') {
