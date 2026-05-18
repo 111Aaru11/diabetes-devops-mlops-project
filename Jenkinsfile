@@ -32,16 +32,7 @@ pipeline {
                 }
             }
         }   
-        stage('Run Ansible Playbook') {
-            steps {
-                bat '''
-                wsl bash -c "
-                cd /mnt/c/Users/aarus/Documents/Diabetes-devops-mlops-project/ansible &&
-                ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i inventory playbook.yml --ask-become-pass
-                "
-                '''
-            }
-        }             
+            
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t %DOCKER_IMAGE% .'
@@ -61,7 +52,16 @@ pipeline {
                 }
             }
         }
-
+        stage('Run Ansible Playbook') {
+            steps {
+                bat '''
+                wsl bash -c "
+                cd /mnt/c/Users/aarus/Documents/Diabetes-devops-mlops-project/ansible &&
+                ANSIBLE_CONFIG=ansible.cfg ansible-playbook -i inventory playbook.yml
+                "
+                '''
+            }
+        }
         stage('Deploy to Kubernetes') {
             steps {
                 bat 'kubectl apply -f k8s/deployment.yaml'
