@@ -15,6 +15,21 @@ pipeline {
             }
         }
 
+        stage('Terraform Init') {
+            steps {
+                dir('terraform') {
+                    bat 'terraform init'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                dir('terraform') {
+                    bat 'terraform apply -auto-approve'
+                }
+            }
+        }        
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t %DOCKER_IMAGE% .'
