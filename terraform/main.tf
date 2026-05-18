@@ -2,14 +2,12 @@ terraform {
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = "2.23.1"
+      version = "~> 3.0"
     }
   }
 }
 
-provider "docker" {
-    host = "npipe:////./pipe/docker_engine"
-}
+provider "docker" {}
 
 resource "docker_image" "diabetes_app" {
   name = "aarushi1111/diabetes-app:latest"
