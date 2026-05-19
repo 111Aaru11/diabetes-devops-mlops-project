@@ -3,6 +3,9 @@ kind: Service
 
 metadata:
   name: diabetes-service
+  
+  labels:
+    app: diabetes-app
 
 spec:
   selector:
