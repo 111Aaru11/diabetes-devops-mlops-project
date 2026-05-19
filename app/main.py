@@ -17,7 +17,7 @@ from prometheus_client import Histogram
 from prometheus_client import generate_latest
 from prometheus_client import CONTENT_TYPE_LATEST
 
-
+#new change for jenkins test
 # ===================================
 # CREATE FLASK APP
 # ===================================
@@ -293,7 +293,7 @@ if __name__ == "__main__":
         debug=True
     )
 
-    
+
 # from flask import Flask, render_template, request, jsonify
 
 # import torch
